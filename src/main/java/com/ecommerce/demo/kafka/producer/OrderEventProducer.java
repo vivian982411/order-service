@@ -27,7 +27,6 @@ public class OrderEventProducer {
     @CircuitBreaker(name = "kafkaPublisher", fallbackMethod = "fallbackPublishOrderEvent")
     public void publishOrderEvent(Order order) {
         try {
-            // Crear el evento con los datos del cliente
             log.info("Publishing order event for order ID: {}", order.getId());
             OrderEvent event = new OrderEvent(
                     order.getId(),
@@ -39,10 +38,8 @@ public class OrderEventProducer {
                     order.getQuantity(),
                     order.getStatus()
             );
-            // Convertir el evento a JSON
             String eventJson = objectMapper.writeValueAsString(event);
             log.debug("Order event JSON: {}", eventJson);
-            // Publicar el evento en Kafka
             kafkaTemplate.send(topic, eventJson);
             log.info("Order event published successfully for order ID: {}", order.getId());
         } catch (JsonProcessingException e) {
@@ -54,9 +51,7 @@ public class OrderEventProducer {
         }
     }
 
-    // Método de fallback
     public void fallbackPublishOrderEvent(Order order, Throwable t) {
         log.error("Fallback: Unable to publish order event for order ID: {}. Error: {}", order.getId(), t.getMessage());
-        // Aquí puedes implementar una lógica alternativa, como guardar el evento en una base de datos para reintentar más tarde.
     }
 }
