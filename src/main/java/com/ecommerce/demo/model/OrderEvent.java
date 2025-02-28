@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 
 @Data
 public class OrderEvent {
-    private Long orderId;           // ID de la orden
-    private Long clientId;          // ID del cliente
-    private String clientName;      // Nombre del cliente
-    private String clientEmail;     // Correo electrónico del cliente
-    private String clientPhone;     // Teléfono del cliente
-    private String productId;       // ID del producto
-    private Integer quantity;       // Cantidad del producto
-    private OrderStatus status;     // Estado de la orden
-    private LocalDateTime eventTimestamp; // Fecha y hora del evento
+    private Long orderId;
+    private Long clientId;
+    private String clientName;
+    private String clientEmail;
+    private String clientPhone;
+    private String productId;
+    private Integer quantity;
+    private OrderStatus status;
+    private LocalDateTime eventTimestamp;
 
     public OrderEvent(Long orderId, Long clientId, String clientName, String clientEmail, String clientPhone,
                       String productId, Integer quantity, OrderStatus status) {
