@@ -1,0 +1,58 @@
+server:
+  port : 8081
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    url: jdbc:mysql://localhost:3306/orders_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+kafka:
+  topic:
+    order-events: order-events
+logging:
+  level:
+    root: INFO
+    com.ecommerce.orderservice: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      kafkaPublisher:
+        register-health-indicator: true
+        failure-rate-threshold: 50           # Abre el circuito si el 50% de las solicitudes fallan
+        minimum-number-of-calls: 10          # Número mínimo de llamadas antes de calcular la tasa de fallos
+        sliding-window-size: 10              # Tamaño de la ventana deslizante para calcular la tasa de fallos
+        wait-duration-in-open-state: 10s     # Tiempo de espera antes de pasar a semiabierto
+        permitted-number-of-calls-in-half-open-state: 3 # Número de llamadas permitidas en estado semiabierto
+        automatic-transition-from-open-to-half-open-enabled: true
+      databaseOperations:
+        register-health-indicator: true
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 10
+        sliding-window-size: 10
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html  # Ruta para acceder a la interfaz de Swagger UI
+    enabled: true           # Habilitar Swagger UI
+  api-docs:
+    path: /v3/api-docs      # Ruta para acceder al JSON de OpenAPI
+    enabled: true           # Habilitar la generación del JSON de OpenAPI
