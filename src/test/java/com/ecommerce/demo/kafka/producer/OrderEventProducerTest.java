@@ -2,6 +2,7 @@ package com.ecommerce.demo.kafka.producer;
 
 import com.ecommerce.demo.model.Client;
 import com.ecommerce.demo.model.Order;
+import com.ecommerce.demo.model.OrderEvent;
 import com.ecommerce.demo.model.OrderStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.*;
 class OrderEventProducerTest {
 
     @Mock
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -56,7 +57,7 @@ class OrderEventProducerTest {
         orderEventProducer.publishOrderEvent(order);
 
         // Assert
-        verify(kafkaTemplate, times(1)).send(eq("order-events"), anyString());
+        verify(kafkaTemplate, times(1)).send(eq("order-events"), any());
     }
 
     @Test
