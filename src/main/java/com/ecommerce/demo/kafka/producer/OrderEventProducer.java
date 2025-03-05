@@ -19,7 +19,7 @@ public class OrderEventProducer {
     private String topic;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, OrderEvent> kafkaTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -40,7 +40,7 @@ public class OrderEventProducer {
             );
             String eventJson = objectMapper.writeValueAsString(event);
             log.debug("Order event JSON: {}", eventJson);
-            kafkaTemplate.send(topic, eventJson);
+            kafkaTemplate.send(topic, event);
             log.info("Order event published successfully for order ID: {}", order.getId());
         } catch (JsonProcessingException e) {
             log.error("Error serializing order event for order ID: {}", order.getId(), e);

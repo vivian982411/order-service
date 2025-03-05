@@ -79,7 +79,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Resilience4j (compatible con Spring Boot 3.x) -->
+		<!-- Resilience4j -->
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
 			<artifactId>resilience4j-spring-boot3</artifactId>
@@ -96,6 +96,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>order-service</finalName>
 		<plugins>
 			<!-- Plugin de Compilación -->
 			<plugin>
